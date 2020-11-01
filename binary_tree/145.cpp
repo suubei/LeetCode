@@ -1,4 +1,5 @@
-// Binary Tree Preorder Traversal
+// Binary Tree Postorder Traversal
+#include <algorithm>
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -27,13 +28,14 @@ class Solution {
       TreeNode *p = s.top();
       s.pop();
       v.push_back(p->val);
-      if (p->right) {
-        s.push(p->right);
-      }
       if (p->left) {
         s.push(p->left);
       }
+      if (p->right) {
+        s.push(p->right);
+      }
     }
+    reverse(v.begin(), v.end());
     return v;
   }
 };

@@ -1,4 +1,4 @@
-// Binary Tree Preorder Traversal
+// Binary Tree Inorder Traversal
 #include <iostream>
 #include <stack>
 #include <vector>
@@ -18,25 +18,23 @@ struct TreeNode {
 class Solution {
  public:
   vector<int> inorderTraversal(TreeNode *root) {
+    if (root == nullptr) return {};
     stack<TreeNode *> s;
-    vector<int> result;
-    if (root) {
-      s.push(root);
-    }
-    while (!s.empty()) {
-      TreeNode *p = s.top();
-      if (p->left) {
+    vector<int> v;
+    TreeNode *current = root;
+
+    while (current || !s.empty()) {
+      while (current) {
+        s.push(current);
+        current = current->left;
       }
+      current = s.top();
       s.pop();
-      result.push_back(p->val);
-      if (p->right) {
-        s.push(p->right);
-      }
-      if (p->left) {
-        s.push(p->left);
-      }
+      v.push_back(current->val);
+      current = current->right;
     }
-    return result;
+
+    return v;
   }
 };
 
