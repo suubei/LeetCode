@@ -39,5 +39,3 @@ class Solution {
     return v;
   }
 };
-
-int main() { return 0; }
