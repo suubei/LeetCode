@@ -17,18 +17,31 @@ struct TreeNode {
 class Solution {
  public:
   TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
-    if (preorder.empty() || inorder.empty() ||
-        preorder.size() != inorder.size()) {
-      return nullptr;
+    int rootIndex = 0;
+    return build(preorder, inorder, 0, inorder.size() - 1, &rootIndex);
+  }
+
+  TreeNode *build(vector<int> &preorder, vector<int> &inorder, int start,
+                  int end, int *rootIndex) {
+    if (start > end) {
+      return NULL;
+    } else {
+      TreeNode *tree = new TreeNode(preorder[(*rootIndex)++]);
+      if (end != start) {
+        int index = search(inorder, start, end, tree->val);
+        tree->left = build(preorder, inorder, start, index - 1, rootIndex);
+        tree->right = build(preorder, inorder, index + 1, end, rootIndex);
+      }
+      return tree;
     }
-    auto root = find(inorder.begin(), inorder.end(), preorder.front());
-    vector<int> leftInorder = {inorder.begin(), root};
-    vector<int> rightInorder = {root + 1, inorder.end()};
-    vector<int> leftPreorder = {preorder.begin() + 1,
-                                preorder.begin() + 1 + leftInorder.size()};
-    vector<int> rightPreorder = {preorder.begin() + leftInorder.size() + 1,
-                                 rightPreorder.end()};
-    return new TreeNode(*root, buildTree(leftPreorder, leftInorder),
-                        buildTree(rightPreorder, rightInorder));
+  }
+
+  int search(vector<int> &inorder, int start, int end, int root) {
+    for (int i = end; i >= start; i--) {
+      if (inorder[i] == root) {
+        return i;
+      }
+    }
+    return end;
   }
 };
