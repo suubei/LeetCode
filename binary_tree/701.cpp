@@ -1,4 +1,4 @@
-// Path Sum
+// Insert into a Binary Search Tree
 #include <iostream>
 
 using namespace std;
@@ -15,10 +15,13 @@ struct TreeNode {
 
 class Solution {
  public:
-  bool hasPathSum(TreeNode *root, int sum) {
-    if (!root) return false;
-    if (!root->left && !root->right) return root->val == sum;
-    return hasPathSum(root->left, sum - root->val) ||
-           hasPathSum(root->right, sum - root->val);
+  TreeNode *insertIntoBST(TreeNode *root, int val) {
+    if (!root) return new TreeNode(val);
+    if (root->val > val) {
+      root->left = insertIntoBST(root->left, val);
+    } else {
+      root->right = insertIntoBST(root->right, val);
+    }
+    return root;
   }
 };
